@@ -237,6 +237,8 @@ import * as SqlClient from "effect/sql/SqlClient";
 import * as PullRequestSyncReactor from "./orchestration-v2/PullRequestSyncReactor.ts";
 import * as SourceControlDiscovery from "./sourceControl/SourceControlDiscovery.ts";
 import * as OtlpEndpointCheck from "./observability/OtlpEndpointCheck.ts";
+import * as LinearIssues from "./linear/LinearIssues.ts";
+import * as ProcessRunner from "./processRunner.ts";
 import * as SourceControlRepositoryService from "./sourceControl/SourceControlRepositoryService.ts";
 import * as SourceControlBuiltInDrivers from "./sourceControl/builtInDrivers.ts";
 import * as SourceControlProviderRegistry from "./sourceControl/SourceControlProviderRegistry.ts";
@@ -1283,6 +1285,7 @@ const layerWsRpc = (
       const serverAuth = yield* EnvironmentAuth.EnvironmentAuth;
       const sourceControlDiscovery = yield* SourceControlDiscovery.SourceControlDiscovery;
       const otlpEndpointCheck = yield* OtlpEndpointCheck.OtlpEndpointCheck;
+      const linearIssues = yield* LinearIssues.LinearIssues;
       const automaticGitFetchInterval = serverSettings.getSettings.pipe(
         Effect.map(
           (settings) => resolveServerBackgroundActivitySettings(settings).automaticGitFetchInterval,
@@ -2366,6 +2369,11 @@ const layerWsRpc = (
             return ServerSettings.redactServerSettingsForClient(settings);
           }),
         [WS_METHODS.serverDiscoverSourceControl]: (_input) => sourceControlDiscovery.discover,
+        [WS_METHODS.linearListIssues]: (input) => linearIssues.listIssues(input),
+        [WS_METHODS.linearGetIssue]: (input) => linearIssues.getIssue(input.identifier),
+        [WS_METHODS.linearListProjects]: (_input) => linearIssues.listProjects,
+        [WS_METHODS.linearGetProject]: (input) => linearIssues.getProject(input.project),
+        [WS_METHODS.linearGetFilterOptions]: (_input) => linearIssues.getFilterOptions,
         [WS_METHODS.serverGetTraceDiagnostics]: (_input) =>
           TraceDiagnostics.readTraceDiagnostics({
             traceFilePath: config.serverTracePath,
@@ -3181,6 +3189,7 @@ export const layer = Layer.unwrap(
                   reviewGuides,
                 ),
               ),
+              Layer.provide(LinearIssues.layer.pipe(Layer.provide(ProcessRunner.layer))),
               Layer.provide(
                 SourceControlDiscovery.layer.pipe(
                   Layer.provide(

@@ -96,6 +96,11 @@ export const RPC_REQUIRED_SCOPES = {
   [WS_METHODS.serverDisableAcpRegistryProvider]: AuthProvidersManageScope,
   [WS_METHODS.serverLogoutAcpRegistry]: AuthProvidersManageScope,
   [WS_METHODS.serverDiscoverSourceControl]: AuthOrchestrationReadScope,
+  [WS_METHODS.linearListIssues]: AuthOrchestrationReadScope,
+  [WS_METHODS.linearGetIssue]: AuthOrchestrationReadScope,
+  [WS_METHODS.linearListProjects]: AuthOrchestrationReadScope,
+  [WS_METHODS.linearGetProject]: AuthOrchestrationReadScope,
+  [WS_METHODS.linearGetFilterOptions]: AuthOrchestrationReadScope,
   [WS_METHODS.serverGetTraceDiagnostics]: AuthDiagnosticsReadScope,
   [WS_METHODS.serverGetProcessDiagnostics]: AuthDiagnosticsReadScope,
   // Load-balancing new threads reads host load; that is part of operating

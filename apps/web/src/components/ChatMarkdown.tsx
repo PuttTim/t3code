@@ -208,6 +208,7 @@ import {
   useOpenChangeRequestLink,
 } from "~/lib/openPullRequestLink";
 import { observeResize } from "~/lib/observeResize";
+import { openLinearRef, parseLinearUrl } from "~/linearThreadStore";
 import { useOpenLink } from "../browser/useOpenLink";
 import { writeTextToClipboard } from "../hooks/useCopyToClipboard";
 import { isPreviewAvailableFor } from "../browser/previewRuntime";
@@ -2986,6 +2987,23 @@ const CHAT_MARKDOWN_COMPONENTS = {
                   ? event.target
                   : event.currentTarget.querySelector("img"),
               );
+              return;
+            }
+            // A Linear issue or project link opens in the thread's Linear panel; a
+            // modifier click still goes to the browser.
+            const linearRef = href ? parseLinearUrl(href) : null;
+            if (
+              linearRef !== null &&
+              threadRef &&
+              !event.defaultPrevented &&
+              !event.metaKey &&
+              !event.ctrlKey &&
+              !event.shiftKey &&
+              !event.altKey
+            ) {
+              event.preventDefault();
+              event.stopPropagation();
+              openLinearRef(threadRef, linearRef);
               return;
             }
             if (
