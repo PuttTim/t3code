@@ -21,6 +21,7 @@ import { pullRequestPanelContext } from "../pullRequest/pullRequestDetail.logic"
 import { PullRequestDetailPanel } from "../pullRequest/PullRequestDetailPanel";
 import { PullRequestDetailGhost } from "../pullRequest/PullRequestGhosts";
 import { PullRequestsUnavailableState } from "../pullRequest/PullRequestsUnavailableState";
+import { LinearIssuesPanel } from "../linear/LinearIssuesPanel";
 import { ThreadPullRequestsPanel } from "../pullRequest/ThreadPullRequestsPanel";
 
 const PreviewPanel = lazy(() =>
@@ -162,6 +163,8 @@ export function RightPanelSurfaceContent(props: {
     }
     case "pull-requests":
       return <ThreadPullRequestsPanel threadRef={threadRef} />;
+    case "linear":
+      return <LinearIssuesPanel threadRef={threadRef} projectId={props.pullRequest.projectId} />;
     case "device":
       return (
         <Suspense fallback={null}>

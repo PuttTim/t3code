@@ -368,6 +368,17 @@ import {
   SourceControlRepositoryInfo,
   SourceControlRepositoryLookupInput,
 } from "./sourceControl.ts";
+import {
+  LinearCliError,
+  LinearFilterOptions,
+  LinearGetIssueInput,
+  LinearGetProjectInput,
+  LinearIssueDetail,
+  LinearListIssuesInput,
+  LinearListIssuesResult,
+  LinearListProjectsResult,
+  LinearProjectDetail,
+} from "./linear.ts";
 import { VcsError } from "./vcs.ts";
 import { Project, ProjectMutation, ProjectMutationError } from "./project.ts";
 
@@ -477,6 +488,13 @@ export const WS_METHODS = {
   serverGetSettings: "server.getSettings",
   serverUpdateSettings: "server.updateSettings",
   serverDiscoverSourceControl: "server.discoverSourceControl",
+
+  // Linear (via the user's `linear` CLI)
+  linearListIssues: "linear.listIssues",
+  linearGetIssue: "linear.getIssue",
+  linearListProjects: "linear.listProjects",
+  linearGetProject: "linear.getProject",
+  linearGetFilterOptions: "linear.getFilterOptions",
   serverSearchAcpRegistry: "server.searchAcpRegistry",
   serverPrepareAcpRegistryAgent: "server.prepareAcpRegistryAgent",
   serverUninstallAcpRegistryManagedBinary: "server.uninstallAcpRegistryManagedBinary",
@@ -765,6 +783,36 @@ const WsServerDiscoverSourceControlRpc = Rpc.make(WS_METHODS.serverDiscoverSourc
   payload: Schema.Struct({}),
   success: SourceControlDiscoveryResult,
   error: EnvironmentAuthorizationError,
+});
+
+const WsLinearListIssuesRpc = Rpc.make(WS_METHODS.linearListIssues, {
+  payload: LinearListIssuesInput,
+  success: LinearListIssuesResult,
+  error: Schema.Union([LinearCliError, EnvironmentAuthorizationError]),
+});
+
+const WsLinearGetIssueRpc = Rpc.make(WS_METHODS.linearGetIssue, {
+  payload: LinearGetIssueInput,
+  success: LinearIssueDetail,
+  error: Schema.Union([LinearCliError, EnvironmentAuthorizationError]),
+});
+
+const WsLinearListProjectsRpc = Rpc.make(WS_METHODS.linearListProjects, {
+  payload: Schema.Struct({}),
+  success: LinearListProjectsResult,
+  error: Schema.Union([LinearCliError, EnvironmentAuthorizationError]),
+});
+
+const WsLinearGetProjectRpc = Rpc.make(WS_METHODS.linearGetProject, {
+  payload: LinearGetProjectInput,
+  success: LinearProjectDetail,
+  error: Schema.Union([LinearCliError, EnvironmentAuthorizationError]),
+});
+
+const WsLinearGetFilterOptionsRpc = Rpc.make(WS_METHODS.linearGetFilterOptions, {
+  payload: Schema.Struct({}),
+  success: LinearFilterOptions,
+  error: Schema.Union([LinearCliError, EnvironmentAuthorizationError]),
 });
 
 const WsServerSearchAcpRegistryRpc = Rpc.make(WS_METHODS.serverSearchAcpRegistry, {
@@ -1883,6 +1931,11 @@ export const WsRpcGroup = RpcGroup.make(
   WsServerGetSettingsRpc,
   WsServerUpdateSettingsRpc,
   WsServerDiscoverSourceControlRpc,
+  WsLinearListIssuesRpc,
+  WsLinearGetIssueRpc,
+  WsLinearListProjectsRpc,
+  WsLinearGetProjectRpc,
+  WsLinearGetFilterOptionsRpc,
   WsServerSearchAcpRegistryRpc,
   WsServerPrepareAcpRegistryAgentRpc,
   WsServerUninstallAcpRegistryManagedBinaryRpc,

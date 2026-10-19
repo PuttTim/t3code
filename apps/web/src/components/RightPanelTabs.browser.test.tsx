@@ -140,6 +140,7 @@ async function renderTabs(
         onAddTerminal={noop}
         onAddPullRequest={noop}
         onAddPullRequests={noop}
+        onAddLinear={noop}
         onAddDiff={noop}
         onAddFiles={noop}
         onAddDevice={noop}
@@ -149,6 +150,7 @@ async function renderTabs(
         filesAvailable={false}
         pullRequestAvailable={false}
         pullRequestsAvailable={false}
+        linearAvailable={false}
         deviceAvailable={false}
       >
         <div>content</div>

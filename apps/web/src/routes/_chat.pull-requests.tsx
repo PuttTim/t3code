@@ -1683,6 +1683,7 @@ function PullRequestsRouteView() {
             onAddFiles={() => undefined}
             onAddPullRequest={() => undefined}
             onAddPullRequests={() => undefined}
+            onAddLinear={() => undefined}
             onAddDevice={() => undefined}
             browserAvailable={false}
             terminalAvailable={false}
@@ -1690,6 +1691,7 @@ function PullRequestsRouteView() {
             filesAvailable={false}
             pullRequestAvailable={false}
             pullRequestsAvailable={false}
+            linearAvailable={false}
             deviceAvailable={false}
             pullRequestStatusSeeds={listedPullRequestTabStatuses}
           >

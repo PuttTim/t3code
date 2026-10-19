@@ -21,6 +21,7 @@ import { OpenInPicker } from "./OpenInPicker";
 import { ThreadDetailsSection } from "./ThreadDetailsSection";
 import { ThreadAutomationsPanel } from "./ThreadAutomationsPanel";
 import { ThreadRelationshipsPanel } from "./ThreadRelationshipsControl";
+import { ThreadLinearIssueRow } from "../linear/ThreadLinearIssueRow";
 
 const GitActionsControl = memo(BaseGitActionsControl);
 
@@ -167,6 +168,11 @@ export function ThreadDetailsPanel(props: ThreadDetailsPanelProps) {
                     {...(props.onOpenChanges ? { onOpenChanges: props.onOpenChanges } : {})}
                   />
                 ) : null}
+                {props.draftId ? null : (
+                  <ThreadLinearIssueRow
+                    threadRef={{ environmentId: props.environmentId, threadId: props.threadId }}
+                  />
+                )}
               </div>
             </ThreadDetailsSection>
           ) : null}

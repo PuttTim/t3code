@@ -81,6 +81,7 @@ async function renderPanel(overrides: Partial<ComponentProps<typeof RightPanelTa
         onAddFiles={addFiles}
         onAddPullRequest={noop}
         onAddPullRequests={noop}
+        onAddLinear={noop}
         onAddDevice={noop}
         browserAvailable={false}
         terminalAvailable={false}
@@ -88,6 +89,7 @@ async function renderPanel(overrides: Partial<ComponentProps<typeof RightPanelTa
         filesAvailable
         pullRequestAvailable={false}
         pullRequestsAvailable={false}
+        linearAvailable={false}
         deviceAvailable={false}
         {...overrides}
       >
